@@ -8,7 +8,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--bg:#f2f2f5;--card:#fff;--accent:#FF8C00;--accent2:#E67E22;--text:#1c1c1e;--secondary:#8e8e93;--border:#e5e5ea;--radius:14px;--sol-bg:#f0f5f0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;min-height:100vh}
-.view{display:none;padding:12px 12px 80px;max-width:800px;width:100%;margin:0 auto}
+.view{display:none;padding:12px 12px 80px;max-width:800px;width:100%;margin:0 auto;min-height:calc(100vh - 100px)}
 .view.active{display:block}
 h1{font-size:22px;font-weight:700;margin:4px 0 12px}
 h2{font-size:15px;font-weight:600;margin:0}
@@ -33,15 +33,21 @@ h2{font-size:15px;font-weight:600;margin:0}
 .nav-outer{position:fixed;bottom:10px;left:0;right:0;z-index:100;display:flex;justify-content:center;pointer-events:none}
 .nav-wrap{background:rgba(255,255,255,.45);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:40px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:8px 10px;width:calc(100% - 24px);max-width:520px;pointer-events:auto;border:0.5px solid rgba(255,255,255,.25)}
 .nav{display:flex;gap:4px}
-.nav-inp{flex:1;padding:9px 14px;border:none;border-radius:30px;font-size:15px;background:rgba(118,118,128,.1);color:var(--text);transition:background .2s,flex .3s ease;min-width:0;font-weight:400}
+.nav-swrap{display:none;flex:1;min-width:0}
+.nav-srch .nav-swrap{display:flex}
+.nav-sinp{display:flex;flex:1;align-items:center;background:rgba(118,118,128,.1);border-radius:30px;padding:0 4px 0 14px;min-width:0}
+.nav-sinp:focus-within{background:rgba(118,118,128,.18)}
+.nav-inp{flex:1;padding:9px 0;border:none;font-size:15px;background:transparent;color:var(--text);outline:none;min-width:0;font-weight:400}
 .nav-inp::placeholder{color:var(--secondary);font-weight:400}
-.nav-inp:focus{background:rgba(118,118,128,.18)}
-.nav-inp::-webkit-search-cancel-button{transform:scale(1.6);cursor:pointer}
+.nav-clear{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--secondary);cursor:pointer;border-radius:50%;transition:background .2s;user-select:none}
+.nav-clear:active{background:rgba(118,118,128,.2)}
 .nav-it{text-align:center;cursor:pointer;padding:8px 12px;color:var(--secondary);font-size:12px;font-weight:600;border-radius:30px;transition:width .3s ease,padding .3s ease,opacity .25s ease,transform .25s ease;white-space:nowrap;user-select:none;display:flex;flex-direction:column;align-items:center;gap:1px;overflow:hidden;min-width:0}
 .nav-it.act{background:var(--accent);color:#fff}
 .nav-it-desc{font-size:9px;opacity:.55;display:block;margin-top:0;line-height:1;transition:opacity .25s ease}
+.nav-sbtn{flex-shrink:0;justify-content:center;padding:8px 10px;font-size:18px;line-height:1;gap:0}
 .nav-srch .nav-it{width:0;padding:8px 0;opacity:0;transform:translateY(-6px) scale(.8);pointer-events:none}
 .nav-srch .nav-it-desc{opacity:0}
+.nav-srch .nav-sbtn{display:none}
 .hl{background:#ffd60a;color:#000;padding:0 2px;border-radius:2px}
 .thy-list .q-item{cursor:pointer}
 .thy-list .q-item .q-title{color:var(--accent2)}
@@ -51,22 +57,25 @@ h2{font-size:15px;font-weight:600;margin:0}
 .calc-cats{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
 .calc-cat{padding:6px 14px;border:1.5px solid var(--accent);border-radius:20px;background:transparent;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;user-select:none}
 .calc-cat.act{background:var(--accent);color:#fff}
-.calc-card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:10px}
-.calc-card h3{font-size:14px;font-weight:600;margin-bottom:2px}
-.calc-f{font-size:18px;color:var(--accent);text-align:center;padding:8px 0;font-weight:600}
-.calc-inp{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.calc-inp label{font-size:13px;min-width:36px;color:var(--text)}
-.calc-inp input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--bg);color:var(--text);text-align:right;outline:none;min-width:0;width:0}
-.calc-inp input:focus{border-color:var(--accent)}
-.calc-inp .cu{font-size:12px;color:var(--secondary);min-width:34px}
-.calc-btn{width:100%;padding:10px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
+.calc-card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.calc-card h3{font-size:15px;font-weight:700;margin-bottom:10px;color:var(--accent)}
+.calc-grp{font-size:11px;font-weight:600;color:var(--secondary);text-transform:uppercase;letter-spacing:.5px;margin:8px 0 4px;padding-top:6px;border-top:1px solid var(--border)}
+.calc-grp:first-of-type{border-top:none;margin-top:0;padding-top:0}
+.calc-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.calc-row label{font-size:14px;min-width:38px;font-weight:500;color:var(--text)}
+.calc-row input{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:10px;font-size:15px;background:var(--bg);color:var(--text);text-align:right;outline:none;min-width:0;width:0;font-weight:500}
+.calc-row input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(255,140,0,.15)}
+.calc-row .cu{font-size:12px;color:var(--secondary);min-width:34px;font-weight:500}
+.calc-btn{width:100%;padding:12px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;transition:opacity .2s}
 .calc-btn:active{opacity:.7}
-.calc-r{display:none;margin-top:10px;padding:12px;background:var(--sol-bg);border-radius:10px;font-size:13px;line-height:1.7}
-.calc-r.show{display:block}
-.calc-r .gv{color:var(--secondary)}
-.calc-r .fd{color:var(--accent2);font-weight:600;margin:4px 0}
-.calc-r .st{padding-left:10px;border-left:2px solid var(--accent);margin:2px 0}
-.calc-r .ans{font-size:16px;font-weight:700;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+.calc-res{display:none;margin-top:12px}
+.calc-res.show{display:block}
+.calc-got{font-size:13px;color:var(--secondary);text-align:center;padding:10px;font-weight:500}
+.calc-fr{background:var(--sol-bg);border-radius:10px;padding:10px;margin-bottom:6px}
+.calc-fr .ft{font-size:14px;font-weight:600;margin-bottom:2px}
+.calc-fr .ff{font-size:15px;color:var(--accent);font-weight:600;margin-bottom:4px}
+.calc-fr .fs{padding-left:10px;border-left:2px solid var(--accent);margin:1px 0;font-size:13px;line-height:1.6}
+.calc-fr .fa{font-size:15px;font-weight:700;color:var(--accent);margin-top:4px;padding-top:4px;border-top:1px solid var(--border)}
 
 @media(prefers-color-scheme:dark){
 :root{--bg:#000;--card:#111;--text:#f5f5f7;--secondary:#98989d;--border:#222;--sol-bg:#0a1a0a}
@@ -77,7 +86,8 @@ h2{font-size:15px;font-weight:600;margin:0}
 .solution{color:#b8d4b8!important}
 .hl{background:#594d00;color:#ffd60a}
 .nav-wrap{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.12)}
-.calc-inp input{background:#1a1a1a;border-color:#333}
+.calc-row input{background:#1a1a1a;border-color:#333}
+.calc-fr{background:#0a1a0a}
 }
 </style>
 </head>
@@ -103,11 +113,15 @@ h2{font-size:15px;font-weight:600;margin:0}
 <div class="nav-outer">
 <div class="nav-wrap">
 <div class="nav">
+<div class="nav-swrap" id="sWrap"><div class="nav-sinp">
 <input class="nav-inp" id="sInp" type="search" placeholder="Поиск" autocomplete="off" oninput="onSearch(this.value)">
-<div class="nav-it act" onclick="showView('tickets')">Билеты<span class="nav-it-desc">вопросы+задачи</span></div>
-<div class="nav-it" onclick="showView('tasks')">Задачи<span class="nav-it-desc">все решения</span></div>
-<div class="nav-it" onclick="showView('theory')">Теория<span class="nav-it-desc">67 ответов</span></div>
-<div class="nav-it" onclick="showView('calc')">Калькулятор<span class="nav-it-desc">решатель формул</span></div>
+<span class="nav-clear" id="sClear" onclick="clearSearch()">✕</span>
+</div></div>
+<div class="nav-it nav-sbtn" id="sBtn" onclick="openSearch()">🔍<span class="nav-it-desc">поиск</span></div>
+<div class="nav-it nav-tab act" onclick="showView('tickets')">Билеты<span class="nav-it-desc">вопросы+задачи</span></div>
+<div class="nav-it nav-tab" onclick="showView('tasks')">Задачи<span class="nav-it-desc">все решения</span></div>
+<div class="nav-it nav-tab" onclick="showView('theory')">Теория<span class="nav-it-desc">67 ответов</span></div>
+<div class="nav-it nav-tab" onclick="showView('calc')">Калькулятор<span class="nav-it-desc">решатель формул</span></div>
 </div>
 </div>
 </div>
@@ -259,7 +273,7 @@ function showView(n){
   $$(".view").forEach(function(v){v.classList.remove("active")});
   $$(".nav-it").forEach(function(v){v.classList.remove("act")});
   var map={tickets:0,tasks:1,theory:2,calc:3};
-  $$(".nav-it")[map[n]].classList.add("act");
+  $$(".nav-tab")[map[n]].classList.add("act");
   $("#v"+n.charAt(0).toUpperCase()+n.slice(1)).classList.add("active");
   if(n==="tickets")renderTickets("");
   else if(n==="tasks")renderTasks("");
@@ -274,88 +288,81 @@ function showView(n){
   document.querySelector(".nav-wrap").classList.remove("nav-srch");
 }
 
-var CALC=[
-{id:"v",cat:"Механика",title:"Скорость равноускоренного движения",f:"v = v₀ + a·t",
-inp:[{k:"v0",l:"v₀",u:"м/с"},{k:"a",l:"a",u:"м/с²"},{k:"t",l:"t",u:"с"}],find:"v",fu:"м/с",
-sol:function(v){var r=v.v0+v.a*v.t;return{g:["v₀ = "+v.v0+" м/с","a = "+v.a+" м/с²","t = "+v.t+" с"],st:["v = v₀ + a·t","v = "+v.v0+" + "+v.a+"·"+v.t,"v = "+v.v0+" + "+(v.a*v.t),"v = "+r+" м/с"],an:r+" м/с"}}},
-{id:"s",cat:"Механика",title:"Путь равноускоренного движения",f:"s = v₀·t + a·t²/2",
-inp:[{k:"v0",l:"v₀",u:"м/с"},{k:"t",l:"t",u:"с"},{k:"a",l:"a",u:"м/с²"}],find:"s",fu:"м",
-sol:function(v){var r=v.v0*v.t+0.5*v.a*v.t*v.t;return{g:["v₀ = "+v.v0+" м/с","t = "+v.t+" с","a = "+v.a+" м/с²"],st:["s = v₀·t + a·t²/2","s = "+v.v0+"·"+v.t+" + "+v.a+"·"+v.t+"²/2","s = "+(v.v0*v.t)+" + "+(0.5*v.a*v.t*v.t),"s = "+r+" м"],an:r+" м"}}},
-{id:"v2",cat:"Механика",title:"Связь скорости и пути",f:"v² = v₀² + 2·a·s",
-inp:[{k:"v0",l:"v₀",u:"м/с"},{k:"a",l:"a",u:"м/с²"},{k:"s",l:"s",u:"м"}],find:"v",fu:"м/с",
-sol:function(v){var r=Math.sqrt(v.v0*v.v0+2*v.a*v.s);return{g:["v₀ = "+v.v0+" м/с","a = "+v.a+" м/с²","s = "+v.s+" м"],st:["v² = v₀² + 2·a·s","v² = "+v.v0+"² + 2·"+v.a+"·"+v.s,"v² = "+(v.v0*v.v0)+" + "+(2*v.a*v.s),"v = √"+(v.v0*v.v0+2*v.a*v.s),"v = "+r+" м/с"],an:r+" м/с"}}},
-{id:"F",cat:"Механика",title:"Второй закон Ньютона",f:"F = m·a",
-inp:[{k:"m",l:"m",u:"кг"},{k:"a",l:"a",u:"м/с²"}],find:"F",fu:"Н",
-sol:function(v){var r=v.m*v.a;return{g:["m = "+v.m+" кг","a = "+v.a+" м/с²"],st:["F = m·a","F = "+v.m+"·"+v.a,"F = "+r+" Н"],an:r+" Н"}}},
-{id:"p",cat:"Механика",title:"Импульс тела",f:"p = m·v",
-inp:[{k:"m",l:"m",u:"кг"},{k:"v",l:"v",u:"м/с"}],find:"p",fu:"кг·м/с",
-sol:function(v){var r=v.m*v.v;return{g:["m = "+v.m+" кг","v = "+v.v+" м/с"],st:["p = m·v","p = "+v.m+"·"+v.v,"p = "+r+" кг·м/с"],an:r+" кг·м/с"}}},
-{id:"Ek",cat:"Механика",title:"Кинетическая энергия",f:"Eₖ = m·v²/2",
-inp:[{k:"m",l:"m",u:"кг"},{k:"v",l:"v",u:"м/с"}],find:"Eₖ",fu:"Дж",
-sol:function(v){var r=0.5*v.m*v.v*v.v;return{g:["m = "+v.m+" кг","v = "+v.v+" м/с"],st:["Eₖ = m·v²/2","Eₖ = "+v.m+"·"+v.v+"²/2","Eₖ = "+(0.5*v.m*v.v*v.v)+" Дж"],an:r+" Дж"}}},
-{id:"Tspring",cat:"Колебания",title:"Период пружинного маятника",f:"T = 2π·√(m/k)",
-inp:[{k:"m",l:"m",u:"кг"},{k:"k",l:"k",u:"Н/м"}],find:"T",fu:"с",
-sol:function(v){var r=2*Math.PI*Math.sqrt(v.m/v.k);return{g:["m = "+v.m+" кг","k = "+v.k+" Н/м"],st:["T = 2π·√(m/k)","T = 2·3.14·√("+v.m+"/"+v.k+")","T = 6.28·√"+(v.m/v.k),"T = 6.28·"+Math.sqrt(v.m/v.k).toFixed(4),"T = "+r.toFixed(3)+" с"],an:r.toFixed(3)+" с"}}},
-{id:"Tpend",cat:"Колебания",title:"Период математического маятника",f:"T = 2π·√(L/g)",
-inp:[{k:"L",l:"L",u:"м"}],find:"T",fu:"с",
-sol:function(v){var r=2*Math.PI*Math.sqrt(v.L/9.81);return{g:["L = "+v.L+" м","g = 9.81 м/с²"],st:["T = 2π·√(L/g)","T = 2·3.14·√("+v.L+"/9.81)","T = 6.28·√"+(v.L/9.81).toFixed(4),"T = 6.28·"+Math.sqrt(v.L/9.81).toFixed(4),"T = "+r.toFixed(3)+" с"],an:r.toFixed(3)+" с"}}},
-{id:"omega",cat:"Колебания",title:"Циклическая частота",f:"ω = 2π/T",
-inp:[{k:"T",l:"T",u:"с"}],find:"ω",fu:"рад/с",
-sol:function(v){var r=2*Math.PI/v.T;return{g:["T = "+v.T+" с"],st:["ω = 2π/T","ω = 6.28/"+v.T,"ω = "+r.toFixed(3)+" рад/с"],an:r.toFixed(3)+" рад/с"}}},
-{id:"Eosc",cat:"Колебания",title:"Энергия гармонического осциллятора",f:"E = m·A²·ω²/2",
-inp:[{k:"m",l:"m",u:"кг"},{k:"A",l:"A",u:"м"},{k:"w",l:"ω",u:"рад/с"}],find:"E",fu:"Дж",
-sol:function(v){var r=0.5*v.m*v.A*v.A*v.w*v.w;return{g:["m = "+v.m+" кг","A = "+v.A+" м","ω = "+v.w+" рад/с"],st:["E = m·A²·ω²/2","E = "+v.m+"·"+v.A+"²·"+v.w+"²/2","E = "+(0.5*v.m*v.A*v.A*v.w*v.w)+" Дж"],an:r+" Дж"}}},
-{id:"beta",cat:"Колебания",title:"Коэффициент затухания",f:"β = r/(2m)",
-inp:[{k:"r",l:"r",u:"кг/с"},{k:"m",l:"m",u:"кг"}],find:"β",fu:"с⁻¹",
-sol:function(v){var r=v.r/(2*v.m);return{g:["r = "+v.r+" кг/с","m = "+v.m+" кг"],st:["β = r/(2m)","β = "+v.r+"/(2·"+v.m+")","β = "+v.r+"/"+(2*v.m),"β = "+r+" с⁻¹"],an:r+" с⁻¹"}}},
-{id:"Coulomb",cat:"Электростатика",title:"Закон Кулона",f:"F = k·|q₁·q₂|/r²",
-inp:[{k:"q1",l:"q₁",u:"Кл"},{k:"q2",l:"q₂",u:"Кл"},{k:"r",l:"r",u:"м"}],find:"F",fu:"Н",
-sol:function(v){var k=9e9,r=k*Math.abs(v.q1*v.q2)/(v.r*v.r);return{g:["q₁ = "+v.q1+" Кл","q₂ = "+v.q2+" Кл","r = "+v.r+" м","k = 9·10⁹ Н·м²/Кл²"],st:["F = k·|q₁·q₂|/r²","F = 9·10⁹·|"+v.q1+"·"+v.q2+"|/"+v.r+"²","F = 9·10⁹·"+Math.abs(v.q1*v.q2)+"/"+(v.r*v.r),"F = "+r.toExponential(3)+" Н"],an:r.toExponential(3)+" Н"}}},
-{id:"Efield",cat:"Электростатика",title:"Напряженность точечного заряда",f:"E = k·|q|/r²",
-inp:[{k:"q",l:"q",u:"Кл"},{k:"r",l:"r",u:"м"}],find:"E",fu:"В/м",
-sol:function(v){var k=9e9,r=k*Math.abs(v.q)/(v.r*v.r);return{g:["q = "+v.q+" Кл","r = "+v.r+" м","k = 9·10⁹ Н·м²/Кл²"],st:["E = k·|q|/r²","E = 9·10⁹·|"+v.q+"|/"+v.r+"²","E = "+(k*Math.abs(v.q))+"/"+(v.r*v.r),"E = "+r.toExponential(3)+" В/м"],an:r.toExponential(3)+" В/м"}}},
-{id:"phi",cat:"Электростатика",title:"Потенциал точечного заряда",f:"φ = k·q/r",
-inp:[{k:"q",l:"q",u:"Кл"},{k:"r",l:"r",u:"м"}],find:"φ",fu:"В",
-sol:function(v){var k=9e9,r=k*v.q/v.r;return{g:["q = "+v.q+" Кл","r = "+v.r+" м","k = 9·10⁹ Н·м²/Кл²"],st:["φ = k·q/r","φ = 9·10⁹·"+v.q+"/"+v.r,"φ = "+r.toExponential(3)+" В"],an:r.toExponential(3)+" В"}}},
-{id:"Ccap",cat:"Электростатика",title:"Электроемкость",f:"C = q/U",
-inp:[{k:"q",l:"q",u:"Кл"},{k:"U",l:"U",u:"В"}],find:"C",fu:"Ф",
-sol:function(v){var r=v.q/v.U;return{g:["q = "+v.q+" Кл","U = "+v.U+" В"],st:["C = q/U","C = "+v.q+"/"+v.U,"C = "+r.toExponential(3)+" Ф"],an:r.toExponential(3)+" Ф"}}},
-{id:"Wcap",cat:"Электростатика",title:"Энергия конденсатора",f:"W = C·U²/2",
-inp:[{k:"C",l:"C",u:"Ф"},{k:"U",l:"U",u:"В"}],find:"W",fu:"Дж",
-sol:function(v){var r=0.5*v.C*v.U*v.U;return{g:["C = "+v.C+" Ф","U = "+v.U+" В"],st:["W = C·U²/2","W = "+v.C+"·"+v.U+"²/2","W = "+(0.5*v.C*v.U*v.U)+" Дж"],an:r.toExponential(3)+" Дж"}}},
-];
+var C={
+Механика:{vars:[
+{k:"v0",l:"v₀",u:"м/с",g:"Кинематика"},{k:"v",l:"v",u:"м/с",g:"Кинематика"},{k:"a",l:"a",u:"м/с²",g:"Кинематика"},{k:"t",l:"t",u:"с",g:"Кинематика"},{k:"s",l:"s",u:"м",g:"Кинематика"},
+{k:"m",l:"m",u:"кг",g:"Динамика"},{k:"F",l:"F",u:"Н",g:"Динамика"},{k:"p",l:"p",u:"кг·м/с",g:"Динамика"},{k:"Ek",l:"Eₖ",u:"Дж",g:"Динамика"}],
+f:[
+{tt:"Скорость",ff:"v = v₀ + at",in:["v0","a","t"],out:"v",fn:function(d){return{d:d.v0+d.a*d.t,st:["v = "+d.v0+" + "+d.a+"·"+d.t,"v = "+(d.v0+d.a*d.t)+" м/с"],an:(d.v0+d.a*d.t)+" м/с"}}},
+{tt:"Путь",ff:"s = v₀t + at²/2",in:["v0","t","a"],out:"s",fn:function(d){var r=d.v0*d.t+.5*d.a*d.t*d.t;return{d:r,st:["s = "+d.v0+"·"+d.t+" + ½·"+d.a+"·"+d.t+"²","s = "+(d.v0*d.t)+" + "+(.5*d.a*d.t*d.t),"s = "+r+" м"],an:r+" м"}}},
+{tt:"Связь v и s",ff:"v² = v₀² + 2as",in:["v0","a","s"],out:"v",fn:function(d){var r=Math.sqrt(d.v0*d.v0+2*d.a*d.s);return{d:r,st:["v² = "+d.v0+"² + 2·"+d.a+"·"+d.s,"v² = "+(d.v0*d.v0)+" + "+(2*d.a*d.s),"v = √"+(d.v0*d.v0+2*d.a*d.s),"v = "+r.toFixed(3)+" м/с"],an:r.toFixed(3)+" м/с"}}},
+{tt:"Сила (II закон Ньютона)",ff:"F = ma",in:["m","a"],out:"F",fn:function(d){var r=d.m*d.a;return{d:r,st:["F = "+d.m+"·"+d.a,"F = "+r+" Н"],an:r+" Н"}}},
+{tt:"Импульс",ff:"p = mv",in:["m","v"],out:"p",fn:function(d){var r=d.m*d.v;return{d:r,st:["p = "+d.m+"·"+d.v,"p = "+r+" кг·м/с"],an:r+" кг·м/с"}}},
+{tt:"Кинетическая энергия",ff:"Eₖ = mv²/2",in:["m","v"],out:"Ek",fn:function(d){var r=.5*d.m*d.v*d.v;return{d:r,st:["Eₖ = "+d.m+"·"+d.v+"²/2","Eₖ = "+r+" Дж"],an:r+" Дж"}}}
+]},
+Колебания:{vars:[
+{k:"T",l:"T",u:"с",g:"Характеристики"},{k:"ω",l:"ω",u:"рад/с",g:"Характеристики"},{k:"ν",l:"ν",u:"Гц",g:"Характеристики"},
+{k:"m",l:"m",u:"кг",g:"Параметры"},{k:"k",l:"k",u:"Н/м",g:"Параметры"},{k:"L",l:"L",u:"м",g:"Параметры"},{k:"A",l:"A",u:"м",g:"Параметры"},{k:"E",l:"E",u:"Дж",g:"Параметры"}],
+f:[
+{tt:"Период пружинного маятника",ff:"T = 2π√(m/k)",in:["m","k"],out:"T",fn:function(d){var r=2*Math.PI*Math.sqrt(d.m/d.k);return{d:r,st:["T = 2·3.14·√("+d.m+"/"+d.k+")","T = 6.28·√"+(d.m/d.k).toFixed(4),"T = "+r.toFixed(3)+" с"],an:r.toFixed(3)+" с"}}},
+{tt:"Период математического маятника",ff:"T = 2π√(L/g)",in:["L"],out:"T",fn:function(d){var r=2*Math.PI*Math.sqrt(d.L/9.81);return{d:r,st:["T = 2·3.14·√("+d.L+"/9.81)","T = 6.28·√"+(d.L/9.81).toFixed(4),"T = "+r.toFixed(3)+" с"],an:r.toFixed(3)+" с"}}},
+{tt:"Циклическая частота",ff:"ω = 2π/T",in:["T"],out:"ω",fn:function(d){var r=2*Math.PI/d.T;return{d:r,st:["ω = 6.28/"+d.T,"ω = "+r.toFixed(3)+" рад/с"],an:r.toFixed(3)+" рад/с"}}},
+{tt:"Частота",ff:"ν = 1/T",in:["T"],out:"ν",fn:function(d){var r=1/d.T;return{d:r,st:["ν = 1/"+d.T,"ν = "+r.toFixed(3)+" Гц"],an:r.toFixed(3)+" Гц"}}},
+{tt:"Энергия осциллятора",ff:"E = mA²ω²/2",in:["m","A","ω"],out:"E",fn:function(d){var r=.5*d.m*d.A*d.A*d.ω*d.ω;return{d:r,st:["E = "+d.m+"·"+d.A+"²·"+d.ω+"²/2","E = "+r.toExponential(3)+" Дж"],an:r.toExponential(3)+" Дж"}}}
+]},
+Электростатика:{vars:[
+{k:"q1",l:"q₁",u:"Кл",g:"Заряды"},{k:"q2",l:"q₂",u:"Кл",g:"Заряды"},{k:"q",l:"q",u:"Кл",g:"Заряды"},{k:"r",l:"r",u:"м",g:"Поле"},{k:"E",l:"E",u:"В/м",g:"Поле"},{k:"φ",l:"φ",u:"В",g:"Поле"},{k:"U",l:"U",u:"В",g:"Поле"},{k:"F",l:"F",u:"Н",g:"Поле"},{k:"C",l:"C",u:"Ф",g:"Ёмкость"},{k:"W",l:"W",u:"Дж",g:"Ёмкость"}],
+f:[
+{tt:"Закон Кулона",ff:"F = k·|q₁q₂|/r²",in:["q1","q2","r"],out:"F",fn:function(d){var k=9e9,r=k*Math.abs(d.q1*d.q2)/(d.r*d.r);return{d:r,st:["F = 9·10⁹·|"+d.q1+"·"+d.q2+"|/"+d.r+"²","F = 9·10⁹·"+Math.abs(d.q1*d.q2)+"/"+(d.r*d.r),"F = "+r.toExponential(3)+" Н"],an:r.toExponential(3)+" Н"}}},
+{tt:"Напряженность точечного заряда",ff:"E = k·|q|/r²",in:["q","r"],out:"E",fn:function(d){var k=9e9,r=k*Math.abs(d.q)/(d.r*d.r);return{d:r,st:["E = 9·10⁹·|"+d.q+"|/"+d.r+"²","E = "+(k*Math.abs(d.q))+"/"+(d.r*d.r),"E = "+r.toExponential(3)+" В/м"],an:r.toExponential(3)+" В/м"}}},
+{tt:"Потенциал точечного заряда",ff:"φ = k·q/r",in:["q","r"],out:"φ",fn:function(d){var k=9e9,r=k*d.q/d.r;return{d:r,st:["φ = 9·10⁹·"+d.q+"/"+d.r,"φ = "+r.toExponential(3)+" В"],an:r.toExponential(3)+" В"}}},
+{tt:"Электроемкость",ff:"C = q/U",in:["q","U"],out:"C",fn:function(d){var r=d.q/d.U;return{d:r,st:["C = "+d.q+"/"+d.U,"C = "+r.toExponential(3)+" Ф"],an:r.toExponential(3)+" Ф"}}},
+{tt:"Энергия конденсатора",ff:"W = CU²/2",in:["C","U"],out:"W",fn:function(d){var r=.5*d.C*d.U*d.U;return{d:r,st:["W = "+d.C+"·"+d.U+"²/2","W = "+r.toExponential(3)+" Дж"],an:r.toExponential(3)+" Дж"}}}
+]}
+};
 
 function renderCalc(cat){
-  var el=$("#calcList"),h="";
-  CALC.forEach(function(f){
-    if(cat&&f.cat!==cat)return;
-    h+='<div class="calc-card" id="cc-'+f.id+'"><h3>'+f.title+'</h3><div class="calc-f">'+f.f+'</div>';
-    f.inp.forEach(function(v){
-      h+='<div class="calc-inp"><label>'+v.l+'</label><input id="ci-'+f.id+'-'+v.k+'" type="number" step="any" placeholder="0"><span class="cu">'+v.u+'</span></div>';
-    });
-    h+='<button class="calc-btn" onclick="doCalc(\''+f.id+'\')">Решить</button><div class="calc-r" id="cr-'+f.id+'"></div></div>';
+  var g=C[cat],el=$("#calcList");
+  if(!g){el.innerHTML='<div style="text-align:center;padding:50px 20px;color:var(--secondary)">Нет данных</div>';return}
+  var h='<div class="calc-card"><h3>Введите известные величины</h3>';
+  var grp={};g.vars.forEach(function(v){if(!grp[v.g])grp[v.g]=[];grp[v.g].push(v)});
+  Object.keys(grp).forEach(function(gname){
+    h+='<div class="calc-grp">'+gname+'</div>';
+    grp[gname].forEach(function(v){h+='<div class="calc-row"><label>'+v.l+'</label><input id="ci-'+v.k+'" type="number" step="any" placeholder="—"><span class="cu">'+v.u+'</span></div>'});
   });
-  if(!h)h='<div style="text-align:center;padding:50px 20px;color:var(--secondary)">Нет формул в этой категории</div>';
+  h+='<button class="calc-btn" onclick="doCalc(\''+cat+'\')">Решить</button><div class="calc-res" id="cr-'+cat+'"></div></div>';
   el.innerHTML=h;
 }
 
-function doCalc(id){
-  var f=CALC.filter(function(x){return x.id===id})[0];if(!f)return;
-  var vals={},ok=true;
-  f.inp.forEach(function(v){
-    var el=document.getElementById("ci-"+id+"-"+v.k);
+function doCalc(cat){
+  var g=C[cat];if(!g)return;
+  var d={},allFilled=true;
+  g.vars.forEach(function(v){
+    var el=document.getElementById("ci-"+v.k);
     var num=parseFloat(el.value);
-    if(isNaN(num)||el.value.trim()===""){ok=false;el.style.borderColor="red"}else{el.style.borderColor=""}
-    vals[v.k]=num;
+    if(!isNaN(num)&&el.value.trim()!==""){d[v.k]=num;el.style.borderColor=""}
+    else{el.style.borderColor="rgba(255,59,48,.4)"}
   });
-  if(!ok){alert("Заполните все поля");return}
-  var r=f.sol(vals);
-  var h='<div class="gv"><b>Дано:</b><br>'+r.g.join("<br>")+'</div>';
-  h+='<div class="fd">Найти: '+f.find+' — ?</div>';
-  h+='<b>Решение:</b>';
-  r.st.forEach(function(s){h+='<div class="st">'+s+'</div>'});
-  h+='<div class="ans">Ответ: '+f.find+' = '+r.an+'</div>';
-  var el=document.getElementById("cr-"+id);
+  var filled=Object.keys(d).length;
+  if(filled<2){alert("Введите хотя бы 2 величины");return}
+  var h='',found=0;
+  g.f.forEach(function(fo){
+    var miss=fo.in.filter(function(x){return d[x]===undefined});
+    if(miss.length!==0)return;
+    var outKey=fo.out;
+    if(d[outKey]!==undefined)return;
+    try{
+      var r=fo.fn(d);
+      found++;
+      var ol=C[cat].vars.filter(function(x){return x.k===outKey})[0];
+      h+='<div class="calc-fr"><div class="ft">'+fo.tt+'</div><div class="ff">'+fo.ff+'</div>';
+      fo.in.forEach(function(kk){h+='<div class="fs">'+C[cat].vars.filter(function(x){return x.k===kk})[0].l+' = '+d[kk]+' '+C[cat].vars.filter(function(x){return x.k===kk})[0].u+'</div>'});
+      r.st.forEach(function(s){h+='<div class="fs">'+s+'</div>'});
+      h+='<div class="fa">'+(ol?ol.l:outKey)+' = '+r.an+'</div></div>';
+    }catch(e){}
+  });
+  if(!found)h='<div class="calc-got">С формулами не найдено. Введите другие величины.</div>';
+  var el=document.getElementById("cr-"+cat);
   el.innerHTML=h;el.classList.add("show");
 }
 
@@ -365,9 +372,16 @@ function selCat(el,cat){
 }
 
 var timer=null;
+function openSearch(){
+  document.querySelector(".nav-wrap").classList.add("nav-srch");
+  setTimeout(function(){$("#sInp").focus()},100);
+}
+function clearSearch(){
+  $("#sInp").value="";
+  onSearch("");
+  document.querySelector(".nav-wrap").classList.remove("nav-srch");
+}
 function onSearch(v){
-  var wrap=document.querySelector(".nav-wrap");
-  if(v&&v.trim())wrap.classList.add("nav-srch");else wrap.classList.remove("nav-srch");
   clearTimeout(timer);
   timer=setTimeout(function(){
     var act=document.querySelector(".view.active");
