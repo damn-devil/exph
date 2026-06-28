@@ -31,13 +31,13 @@ h2{font-size:15px;font-weight:600;margin:0}
 .tnum{font-size:11px;color:var(--secondary);font-weight:500;margin-bottom:2px}
 .card-summary{font-size:12px;color:var(--secondary);margin-top:2px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .nav-outer{position:fixed;bottom:10px;left:0;right:0;z-index:100;display:flex;justify-content:center;pointer-events:none}
-.nav-wrap{background:rgba(255,255,255,.45);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:8px 10px;width:calc(100% - 24px);max-width:520px;pointer-events:auto;border:0.5px solid rgba(255,255,255,.25)}
+.nav-wrap{background:rgba(255,255,255,.45);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:40px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:8px 10px;width:calc(100% - 24px);max-width:520px;pointer-events:auto;border:0.5px solid rgba(255,255,255,.25)}
 .nav{display:flex;gap:4px}
-.nav-inp{flex:1;padding:9px 11px;border:none;border-radius:12px;font-size:15px;background:rgba(118,118,128,.1);color:var(--text);transition:background .2s,flex .3s ease;min-width:0;font-weight:400}
+.nav-inp{flex:1;padding:9px 14px;border:none;border-radius:30px;font-size:15px;background:rgba(118,118,128,.1);color:var(--text);transition:background .2s,flex .3s ease;min-width:0;font-weight:400}
 .nav-inp::placeholder{color:var(--secondary);font-weight:400}
 .nav-inp:focus{background:rgba(118,118,128,.18)}
 .nav-inp::-webkit-search-cancel-button{transform:scale(1.6);cursor:pointer}
-.nav-it{text-align:center;cursor:pointer;padding:8px 10px;color:var(--secondary);font-size:12px;font-weight:600;border-radius:10px;transition:width .3s ease,padding .3s ease,opacity .25s ease,transform .25s ease;white-space:nowrap;user-select:none;display:flex;flex-direction:column;align-items:center;gap:1px;overflow:hidden;min-width:0}
+.nav-it{text-align:center;cursor:pointer;padding:8px 12px;color:var(--secondary);font-size:12px;font-weight:600;border-radius:30px;transition:width .3s ease,padding .3s ease,opacity .25s ease,transform .25s ease;white-space:nowrap;user-select:none;display:flex;flex-direction:column;align-items:center;gap:1px;overflow:hidden;min-width:0}
 .nav-it.act{background:var(--accent);color:#fff}
 .nav-it-desc{font-size:9px;opacity:.55;display:block;margin-top:0;line-height:1;transition:opacity .25s ease}
 .nav-srch .nav-it{width:0;padding:8px 0;opacity:0;transform:translateY(-6px) scale(.8);pointer-events:none}
@@ -198,7 +198,7 @@ function renderTickets(f){
     });
     var task=DATA.tasks.filter(function(x){return x.num===t.num})[0];
     if(task){
-      var dt=q?hl(truncate(task.desc,80),q):esc(truncate(task.desc,80));
+      var dt=q?hl(truncate(task.desc,80),q):esc(task.desc);
       h+='<div class="task-box"><h3 onclick="toggleSol(this)">Задача №'+t.num+' ▼</h3><div class="desc">'+dt+'</div>';
       if(task.solution){
         var ds2=renderSol(esc(task.solution));
